@@ -4,10 +4,22 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
+import javafx.stage.Stage;
+import javafx.stage.Window;
+
+import java.awt.*;
 import java.net.URL;
 import java.util.*;
+import java.util.List;
 import java.util.stream.Collectors;
 
 public class Controller implements Initializable
@@ -151,7 +163,7 @@ public class Controller implements Initializable
 
         scheduler s1=new scheduler(l1);
 
-        List<node> nodes;
+        List<node> nodes=new ArrayList<node>() ;
 
         System.out.println(c1.getValue());
         if(c1.getValue()==null)
@@ -229,6 +241,21 @@ public class Controller implements Initializable
                 System.out.println(".............");
             }
 
+            Stage chart = new Stage();
+            chart.setTitle("Gantt chart");
+            chart.setMinWidth(800);
+            chart.setMinHeight(300);
+            HBox layout=new HBox();
+            layout.setAlignment(Pos.CENTER_LEFT);
+            VBox cell = new VBox(10);
+            Label x=new Label("0");
+            Label y=new Label(nodes.get(0).getName());
+            y.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, new BorderWidths(1,1,1,1))));
+            cell.getChildren().addAll(y,x);
+            layout.getChildren().addAll(cell);
+            Scene scene = new Scene(layout);
+            chart.setScene(scene);
+            chart.show();
         }
 
 
