@@ -19,7 +19,8 @@ public class scheduler
 
         for(process p : l1)
         {
-            processes.add(p);
+            process y=new process(p.getName(),p.getArrivalTime(),p.getBurstTime(),p.getPriority());
+            processes.add(y);
             process x=new process(p.getName(),p.getArrivalTime(),p.getBurstTime(),p.getPriority());
             temp.add(x);
         }
@@ -100,7 +101,7 @@ public class scheduler
 
         schedule("FIFO");
 
-        int currentTime=0;
+        double currentTime=0;
         nodes= new ArrayList<node>();
         while(!processes.isEmpty())
         {
@@ -110,7 +111,7 @@ public class scheduler
             {
                 n.setBeginTime(currentTime);
                 n.setEndTime(p.getArrivalTime());
-                n.setName("nothing");
+                n.setName("IDLE");
                 currentTime=p.getArrivalTime();
             }
             else
@@ -118,14 +119,11 @@ public class scheduler
                 n.setBeginTime(currentTime);
                 n.setEndTime(currentTime+p.getBurstTime());
                 n.setName(p.getName());
-                processes.remove(0);
                 currentTime=currentTime+p.getBurstTime();
+                processes.remove(0);
             }
             nodes.add(n);
         }
-
-        for(process x:temp)
-            processes.add(x);
         return nodes;
     }
 
@@ -133,7 +131,7 @@ public class scheduler
     {
         this.schedule("SJF");
 
-        int currentTime=0;
+        double currentTime=0;
         nodes= new ArrayList<node>();
 
         while(!processes.isEmpty())
@@ -141,14 +139,14 @@ public class scheduler
             node n=new node();
             if(processes.get(0).getArrivalTime()>currentTime)
             {
-                n.setName("nothing");
+                n.setName("IDLE");
                 n.setBeginTime(currentTime);
                 n.setEndTime(processes.get(0).getArrivalTime());
                 currentTime=processes.get(0).getArrivalTime();
             }
             else
             {
-                int index=0;int shortestTime=processes.get(0).getBurstTime();
+                int index=0;double shortestTime=processes.get(0).getBurstTime();
                 for(int i=1;i<processes.size();i++)
                 {
                     if (processes.get(i).getArrivalTime() > currentTime)
@@ -173,8 +171,6 @@ public class scheduler
             }
                 nodes.add(n);
             }
-        for(process x : temp)
-            processes.add(x);
 
         return nodes;
         }
@@ -184,7 +180,7 @@ public class scheduler
     {
         this.schedule("priority");
 
-        int currentTime=0;
+        double currentTime=0;
         nodes= new ArrayList<node>();
 
         while(!processes.isEmpty())
@@ -192,7 +188,7 @@ public class scheduler
             node n=new node();
             if(processes.get(0).getArrivalTime()>currentTime)
             {
-                n.setName("nothing");
+                n.setName("IDLE");
                 n.setBeginTime(currentTime);
                 n.setEndTime(processes.get(0).getArrivalTime());
                 currentTime=processes.get(0).getArrivalTime();
@@ -224,8 +220,6 @@ public class scheduler
             }
             nodes.add(n);
         }
-        for(process x : temp)
-            processes.add(x);
 
         return nodes;
     }
@@ -234,7 +228,7 @@ public class scheduler
     public List <node> SJFPreempitive()
     {
         this.schedule("SJF");
-        int currentTime=0;
+        double currentTime=0;
         nodes= new ArrayList<node>();
 
 
@@ -243,14 +237,14 @@ public class scheduler
             node n=new node();
             if(processes.get(0).getArrivalTime()>currentTime)
             {
-                n.setName("nothing");
+                n.setName("IDLE");
                 n.setBeginTime(currentTime);
                 n.setEndTime(processes.get(0).getArrivalTime());
                 currentTime=processes.get(0).getArrivalTime();
             }
             else
             {
-                int index=0;int shortestTime=processes.get(0).getBurstTime();
+                int index=0;double shortestTime=processes.get(0).getBurstTime();
                 int nextIndex=1;
                 for(int i=1;i<processes.size();i++)
                 {
@@ -289,10 +283,9 @@ public class scheduler
                 {
                      n.setEndTime(processes.get(nextIndex).getArrivalTime());
                      currentTime = processes.get(nextIndex).getArrivalTime();
-                     int x = processes.get(index).getBurstTime();
+                     double x = processes.get(index).getBurstTime();
                      processes.get(index).setBurstTime(x - (n.getEndTime() - n.getBeginTime()));
                 }
-
 
             }
             nodes.add(n);
@@ -303,14 +296,14 @@ public class scheduler
             node n=new node();
             if(processes.get(0).getArrivalTime()>currentTime)
             {
-                n.setName("nothing");
+                n.setName("IDLE");
                 n.setBeginTime(currentTime);
                 n.setEndTime(processes.get(0).getArrivalTime());
                 currentTime=processes.get(0).getArrivalTime();
             }
             else
             {
-                int index=0;int shortestTime=processes.get(0).getBurstTime();
+                int index=0;double shortestTime=processes.get(0).getBurstTime();
                 for(int i=1;i<processes.size();i++)
                 {
                     if (processes.get(i).getArrivalTime() > currentTime)
@@ -336,12 +329,6 @@ public class scheduler
             nodes.add(n);
         }
 
-
-
-        for(process x : temp)
-            processes.add(x);
-
-
         for(int i=0;i<nodes.size()-1;i++)
         {
             if(nodes.get(i).getName()==nodes.get(i+1).getName())
@@ -351,6 +338,7 @@ public class scheduler
                 i--;
             }
         }
+
         return nodes;
 
     }
@@ -359,7 +347,7 @@ public class scheduler
     public List <node> priorityPreempitive()
     {
         this.schedule("priority");
-        int currentTime=0;
+        double currentTime=0;
         nodes= new ArrayList<node>();
 
 
@@ -368,7 +356,7 @@ public class scheduler
             node n=new node();
             if(processes.get(0).getArrivalTime()>currentTime)
             {
-                n.setName("nothing");
+                n.setName("IDLE");
                 n.setBeginTime(currentTime);
                 n.setEndTime(processes.get(0).getArrivalTime());
                 currentTime=processes.get(0).getArrivalTime();
@@ -413,7 +401,7 @@ public class scheduler
                 {
                     n.setEndTime(processes.get(nextIndex).getArrivalTime());
                     currentTime = processes.get(nextIndex).getArrivalTime();
-                    int x = processes.get(index).getBurstTime();
+                    double x = processes.get(index).getBurstTime();
                     processes.get(index).setBurstTime(x - (n.getEndTime() - n.getBeginTime()));
                 }
 
@@ -427,7 +415,7 @@ public class scheduler
             node n=new node();
             if(processes.get(0).getArrivalTime()>currentTime)
             {
-                n.setName("nothing");
+                n.setName("IDLE");
                 n.setBeginTime(currentTime);
                 n.setEndTime(processes.get(0).getArrivalTime());
                 currentTime=processes.get(0).getArrivalTime();
@@ -460,11 +448,6 @@ public class scheduler
             nodes.add(n);
         }
 
-
-        for(process x : temp)
-            processes.add(x);
-
-
         for(int i=0;i<nodes.size()-1;i++)
         {
             if(nodes.get(i).getName()==nodes.get(i+1).getName())
@@ -474,27 +457,61 @@ public class scheduler
                 i--;
             }
         }
+
         return nodes;
 
     }
 
 
-    public List<node> roundRobin(int quantum)
+    public List<node> roundRobin(double quantum)
     {
         this.schedule("FIFO");
-        int currentTime=0;
+        double currentTime=0;
         nodes= new ArrayList<node>();
 
         while(!processes.isEmpty())
         {
+
             node n=new node();
             process p=processes.get(0);
             if(currentTime<p.getArrivalTime())
             {
-                n.setBeginTime(currentTime);
-                n.setEndTime(p.getArrivalTime());
-                n.setName("nothing");
-                currentTime=p.getArrivalTime();
+                int index=-1;
+                for(int i=1;i<processes.size();i++)
+                {
+                    if(processes.get(i).getArrivalTime()<currentTime)
+                    {
+                        index=i;break;
+                    }
+                }
+                if(index==-1)
+                {
+                    n.setBeginTime(currentTime);
+                    n.setEndTime(p.getArrivalTime());
+                    n.setName("IDLE");
+                    currentTime = p.getArrivalTime();
+                }
+                else
+                {
+                    p=processes.get(index);
+                    n.setName(p.getName());
+                    n.setBeginTime(currentTime);
+                    if(processes.get(index).getBurstTime()<=quantum)
+                    {
+                        currentTime=currentTime+p.getBurstTime();
+                        n.setEndTime(currentTime);
+                        processes.remove(index);
+                    }
+                    else
+                    {
+                        currentTime=currentTime+quantum;
+                        n.setEndTime(currentTime);
+                        double x=p.getBurstTime();
+                        p.setBurstTime(x-quantum);
+                        processes.remove(index);
+                        processes.add(processes.size(),p);
+                    }
+                }
             }
             else
             {
@@ -510,7 +527,7 @@ public class scheduler
                 {
                     currentTime=currentTime+quantum;
                     n.setEndTime(currentTime);
-                    int x=p.getBurstTime();
+                    double x=p.getBurstTime();
                     p.setBurstTime(x-quantum);
                     processes.remove(0);
                     processes.add(processes.size(),p);
@@ -518,9 +535,6 @@ public class scheduler
             }
             nodes.add(n);
         }
-
-        for(process x:temp)
-            processes.add(x);
 
         return nodes;
     }
@@ -558,6 +572,5 @@ public class scheduler
         }
         return turnAroundTime/temp.size();
     }
-
 
 }

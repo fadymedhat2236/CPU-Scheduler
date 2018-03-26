@@ -59,16 +59,24 @@ public class Controller implements Initializable
     }
 
 
-    public ObservableList<process> getProduct()
+    private ObservableList<process> getProduct()
     {
         ObservableList<process> products = FXCollections.observableArrayList();
+        products.add(new process("p1",0,10,4));
+        products.add(new process("p2",2,5,3));
+        products.add(new process("p3",4,3,5));
+        products.add(new process("p4",6,2,1));
+        products.add(new process("p5",7,1,2));
 
+
+        /*
         products.add(new process("p1",20,1,5));
         products.add(new process("p2",23,10,3));
         products.add(new process("p3",24,6,1));
         products.add(new process("p4",25,20,2));
         products.add(new process("p5",26,4,1));
-/*
+        */
+        /*
         products.add(new process("p1",0,10,3));
         products.add(new process("p2",1,1,1));
         products.add(new process("p3",2,2,4));
@@ -81,11 +89,12 @@ public class Controller implements Initializable
 
 
     //Add button clicked
-    public void addButtonClicked(){
+    public void addButtonClicked()
+    {
         process p = new process();
         p.setName(nameTextField.getText());
-        p.setArrivalTime(Integer.parseInt(arrivalTimeTextField.getText()));
-        p.setBurstTime(Integer.parseInt(burstTimeTextField.getText()));
+        p.setArrivalTime(Double.parseDouble(arrivalTimeTextField.getText()));
+        p.setBurstTime(Double.parseDouble(burstTimeTextField.getText()));
         if(c1.getValue()=="priority")
             p.setPriority(Integer.parseInt(priorityTextField.getText()));
         table1.getItems().add(p);
@@ -93,6 +102,7 @@ public class Controller implements Initializable
         arrivalTimeTextField.clear();
         burstTimeTextField.clear();
         priorityTextField.clear();
+
     }
 
     //Delete button clicked
@@ -143,10 +153,11 @@ public class Controller implements Initializable
 
         List<node> nodes;
 
-
-        if(c1.getValue()=="NULL")
+        System.out.println(c1.getValue());
+        if(c1.getValue()==null)
         {
-
+            alertBox alertBox1=new alertBox();
+            alertBox1.display("Error","You must choose an algorithm");
         }
         else
         {
@@ -208,7 +219,7 @@ public class Controller implements Initializable
             }
             else
             {
-                int q=Integer.parseInt(quantum.getText());
+                double q=Double.parseDouble(quantum.getText());
                 nodes=s1.roundRobin(q);
                 for(node x: nodes)
                     System.out.println(x);
@@ -217,6 +228,7 @@ public class Controller implements Initializable
                 System.out.println(s1.geAveragetTurnAroundTime());
                 System.out.println(".............");
             }
+
         }
 
 

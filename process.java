@@ -3,7 +3,8 @@ package sample;
 public class process
 {
     private String name;
-    private int arrivalTime,burstTime,priority;
+    private double arrivalTime,burstTime;
+    private int priority;
 
     public process()
     {
@@ -13,7 +14,7 @@ public class process
         priority=0;
     }
 
-    public process(String name, int arrivalTime, int burstTime, int priority)
+    public process(String name, double arrivalTime, double burstTime, int priority)
     {
         this.name=name;
         this.arrivalTime=arrivalTime;
@@ -29,19 +30,19 @@ public class process
         this.name = name;
     }
 
-    public int getArrivalTime() {
+    public double getArrivalTime() {
         return arrivalTime;
     }
 
-    public void setArrivalTime(int arrivalTime) {
+    public void setArrivalTime(double arrivalTime) {
         this.arrivalTime = arrivalTime;
     }
 
-    public int getBurstTime() {
+    public double getBurstTime() {
         return burstTime;
     }
 
-    public void setBurstTime(int burstTime) {
+    public void setBurstTime(double burstTime) {
         this.burstTime = burstTime;
     }
 
@@ -57,8 +58,8 @@ public class process
     public String toString()
     {
         String s=name+" ";
-        s+=Integer.toString(arrivalTime)+" ";
-        s+=Integer.toString(burstTime)+" ";
+        s+=Double.toString(arrivalTime)+" ";
+        s+=Double.toString(burstTime)+" ";
         s+=Integer.toString(priority);
         return s;
     }

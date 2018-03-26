@@ -3,14 +3,14 @@ package sample;
 public class node
 {
     private String name;
-    private int beginTime,endTime;
+    private double beginTime,endTime;
 
     public node()
     {
         name="";
         beginTime=endTime=0;
     }
-    public node(String name,int beginTime,int endTime)
+    public node(String name,double beginTime,double endTime)
     {
         this.name=name;
         this.beginTime=beginTime;
@@ -25,31 +25,30 @@ public class node
         this.name = name;
     }
 
-    public int getBeginTime() {
+    public double getBeginTime() {
         return beginTime;
     }
 
-    public void setBeginTime(int beginTime) {
+    public void setBeginTime(double beginTime) {
         this.beginTime = beginTime;
     }
 
-    public int getEndTime() {
+    public double getEndTime() {
         return endTime;
     }
 
-    public void setEndTime(int endTime) {
+    public void setEndTime(double endTime) {
         this.endTime = endTime;
     }
 
     @Override
     public String toString()
     {
-        String s=Integer.toString(beginTime);
+        String s=Double.toString(beginTime);
         s+=":";
         s+=name;
         s+=":";
-        s+=Integer.toString(endTime);
+        s+=Double.toString(endTime);
         return s;
-
     }
 }
