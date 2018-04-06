@@ -14,84 +14,84 @@
 <?import javafx.scene.layout.VBox?>
 
 <BorderPane prefHeight="400.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
-   <top>
-      <VBox spacing="3.0" BorderPane.alignment="CENTER">
-         <children>
-            <HBox fx:id="nonpreempitiveRadioButton" spacing="5.0" VBox.vgrow="ALWAYS">
-               <children>
-                  <ComboBox fx:id="c1" onAction="#comboBoxFunction" promptText="Select an algorithm" />
-                  <TextField fx:id="quantum" promptText="quantum" />
-                  <Region HBox.hgrow="ALWAYS" />
-                  <RadioButton fx:id="preempitive" mnemonicParsing="false" text="preempitive" />
-                  <RadioButton fx:id="nonpreempitive" mnemonicParsing="false" text="nonpreempitive" />
-                  <Region HBox.hgrow="ALWAYS" />
-                  <Button fx:id="addButton" mnemonicParsing="false" onAction="#addButtonClicked" text="add process" HBox.hgrow="ALWAYS" />
-                  <Button fx:id="deletebutton" mnemonicParsing="false" onAction="#deleteButtonClicked" text="delete process" />
-               </children>
-               <VBox.margin>
-                  <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
-               </VBox.margin>
-            </HBox>
-            <HBox spacing="2.0" VBox.vgrow="ALWAYS">
-               <children>
-                  <VBox HBox.hgrow="ALWAYS">
-                     <children>
-                        <TextField fx:id="nameTextField" promptText="name" />
-                     </children>
-                  </VBox>
-                  <Region HBox.hgrow="ALWAYS" />
-                  <VBox layoutX="10.0" layoutY="10.0" HBox.hgrow="ALWAYS">
-                     <children>
-                        <TextField fx:id="arrivalTimeTextField" promptText="Arrival Time" />
-                     </children>
-                  </VBox>
-                  <Region HBox.hgrow="ALWAYS" />
-                  <VBox layoutX="10.0" layoutY="10.0" HBox.hgrow="ALWAYS">
-                     <children>
-                        <TextField fx:id="burstTimeTextField" promptText="Burst Time" />
-                     </children>
-                  </VBox>
-                  <Region HBox.hgrow="ALWAYS" />
-                  <VBox layoutX="312.0" layoutY="10.0" HBox.hgrow="ALWAYS">
-                     <children>
-                        <TextField fx:id="priorityTextField" promptText="Priority" />
-                     </children>
-                  </VBox>
-               </children>
-               <VBox.margin>
-                  <Insets bottom="1.0" left="1.0" right="1.0" top="1.0" />
-               </VBox.margin>
-            </HBox>
-         </children>
-      </VBox>
-   </top>
-   <center>
-      <TableView fx:id="table1" onSort="#scheduleButtonPressed" BorderPane.alignment="CENTER">
-        <columns>
-          <TableColumn fx:id="nameColumn" maxWidth="600.0" minWidth="-1.0" prefWidth="200.0" sortable="false" text="name" />
-          <TableColumn fx:id="arrivalTimeColumn" maxWidth="600.0" minWidth="-1.0" prefWidth="200.0" sortable="false" text="arrival time" />
-            <TableColumn fx:id="burstTimeColumn" maxWidth="600.0" minWidth="-1.0" prefWidth="200.0" sortable="false" text="burst time" />
-            <TableColumn fx:id="priorityColumn" maxWidth="600.0" minWidth="-1.0" prefWidth="200.0" sortable="false" text="priority" />
-        </columns>
-         <BorderPane.margin>
-            <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
-         </BorderPane.margin>
-      </TableView>
-   </center>
-   <bottom>
-      <HBox BorderPane.alignment="CENTER">
-         <children>
-            <Region HBox.hgrow="ALWAYS" />
-            <StackPane>
-               <children>
-                  <Button fx:id="scheduleButton" mnemonicParsing="false" onAction="#scheduleButtonPressed" text="schedule" />
-               </children>
-            </StackPane>
-            <Region HBox.hgrow="ALWAYS" />
-         </children>
-         <BorderPane.margin>
-            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-         </BorderPane.margin>
-      </HBox>
-   </bottom>
+    <top>
+        <VBox spacing="3.0" BorderPane.alignment="CENTER">
+            <children>
+                <HBox fx:id="nonpreempitiveRadioButton" spacing="5.0" VBox.vgrow="ALWAYS">
+                    <children>
+                        <ComboBox fx:id="c1" onAction="#comboBoxFunction" promptText="Select an algorithm" />
+                        <TextField fx:id="quantum" promptText="quantum" />
+                        <Region HBox.hgrow="ALWAYS" />
+                        <RadioButton fx:id="preempitive" mnemonicParsing="false" text="preempitive" />
+                        <RadioButton fx:id="nonpreempitive" mnemonicParsing="false" text="nonpreempitive" />
+                        <Region HBox.hgrow="ALWAYS" />
+                        <Button fx:id="addButton" mnemonicParsing="false" onAction="#addButtonClicked" text="add process" HBox.hgrow="ALWAYS" />
+                        <Button fx:id="deletebutton" mnemonicParsing="false" onAction="#deleteButtonClicked" text="delete process" />
+                    </children>
+                    <VBox.margin>
+                        <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
+                    </VBox.margin>
+                </HBox>
+                <HBox spacing="2.0" VBox.vgrow="ALWAYS">
+                    <children>
+                        <VBox HBox.hgrow="ALWAYS">
+                            <children>
+                                <TextField fx:id="nameTextField" promptText="name" />
+                            </children>
+                        </VBox>
+                        <Region HBox.hgrow="ALWAYS" />
+                        <VBox layoutX="10.0" layoutY="10.0" HBox.hgrow="ALWAYS">
+                            <children>
+                                <TextField fx:id="arrivalTimeTextField" promptText="Arrival Time" />
+                            </children>
+                        </VBox>
+                        <Region HBox.hgrow="ALWAYS" />
+                        <VBox layoutX="10.0" layoutY="10.0" HBox.hgrow="ALWAYS">
+                            <children>
+                                <TextField fx:id="burstTimeTextField" promptText="Burst Time" />
+                            </children>
+                        </VBox>
+                        <Region HBox.hgrow="ALWAYS" />
+                        <VBox layoutX="312.0" layoutY="10.0" HBox.hgrow="ALWAYS">
+                            <children>
+                                <TextField fx:id="priorityTextField" promptText="Priority" />
+                            </children>
+                        </VBox>
+                    </children>
+                    <VBox.margin>
+                        <Insets bottom="1.0" left="1.0" right="1.0" top="1.0" />
+                    </VBox.margin>
+                </HBox>
+            </children>
+        </VBox>
+    </top>
+    <center>
+        <TableView fx:id="table1" onSort="#scheduleButtonPressed" BorderPane.alignment="CENTER">
+            <columns>
+                <TableColumn fx:id="nameColumn" maxWidth="600.0" minWidth="-1.0" onEditCommit="#changeNameCellEvent" prefWidth="200.0" sortable="false" text="name" />
+                <TableColumn fx:id="arrivalTimeColumn" maxWidth="600.0" minWidth="-1.0" onEditCommit="#changeArrivalTimeCellEvent" prefWidth="200.0" sortable="false" text="arrival time" />
+                <TableColumn fx:id="burstTimeColumn" maxWidth="600.0" minWidth="-1.0" onEditCommit="#changeBurstTimeCellEvent" prefWidth="200.0" sortable="false" text="burst time" />
+                <TableColumn fx:id="priorityColumn" maxWidth="600.0" minWidth="-1.0" onEditCommit="#changePriorityCellEvent" prefWidth="200.0" sortable="false" text="priority" />
+            </columns>
+            <BorderPane.margin>
+                <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+            </BorderPane.margin>
+        </TableView>
+    </center>
+    <bottom>
+        <HBox BorderPane.alignment="CENTER">
+            <children>
+                <Region HBox.hgrow="ALWAYS" />
+                <StackPane>
+                    <children>
+                        <Button fx:id="scheduleButton" mnemonicParsing="false" onAction="#scheduleButtonPressed" text="schedule" />
+                    </children>
+                </StackPane>
+                <Region HBox.hgrow="ALWAYS" />
+            </children>
+            <BorderPane.margin>
+                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+            </BorderPane.margin>
+        </HBox>
+    </bottom>
 </BorderPane>

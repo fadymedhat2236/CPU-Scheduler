@@ -154,26 +154,26 @@ public class scheduler
                         break;
                     }
                     else
+                    {
+                        if (processes.get(i).getBurstTime() < shortestTime)
                         {
-                            if (processes.get(i).getBurstTime() < shortestTime)
-                            {
-                                shortestTime = processes.get(i).getBurstTime();
-                                index = i;
-                            }
+                            shortestTime = processes.get(i).getBurstTime();
+                            index = i;
                         }
+                    }
                 }
 
-                    n.setName(processes.get(index).getName());
-                    n.setBeginTime(currentTime);
-                    n.setEndTime(processes.get(index).getBurstTime()+currentTime);
-                    currentTime=currentTime+processes.get(index).getBurstTime();
-                    processes.remove(index);
+                n.setName(processes.get(index).getName());
+                n.setBeginTime(currentTime);
+                n.setEndTime(processes.get(index).getBurstTime()+currentTime);
+                currentTime=currentTime+processes.get(index).getBurstTime();
+                processes.remove(index);
             }
-                nodes.add(n);
-            }
+            nodes.add(n);
+        }
 
         return nodes;
-        }
+    }
 
 
     public List <node> priorityNonpreempitive()
@@ -281,10 +281,10 @@ public class scheduler
                 }
                 else
                 {
-                     n.setEndTime(processes.get(nextIndex).getArrivalTime());
-                     currentTime = processes.get(nextIndex).getArrivalTime();
-                     double x = processes.get(index).getBurstTime();
-                     processes.get(index).setBurstTime(x - (n.getEndTime() - n.getBeginTime()));
+                    n.setEndTime(processes.get(nextIndex).getArrivalTime());
+                    currentTime = processes.get(nextIndex).getArrivalTime();
+                    double x = processes.get(index).getBurstTime();
+                    processes.get(index).setBurstTime(x - (n.getEndTime() - n.getBeginTime()));
                 }
 
             }

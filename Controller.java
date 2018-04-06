@@ -11,12 +11,15 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.Window;
+import javafx.util.converter.DoubleStringConverter;
+import javafx.util.converter.IntegerStringConverter;
 
-import java.awt.*;
+
 import java.net.URL;
 import java.util.*;
 import java.util.List;
@@ -26,8 +29,8 @@ public class Controller implements Initializable
 {
     @FXML private TableView<process> table1;
     @FXML private TableColumn<process,String> nameColumn;
-    @FXML private TableColumn<process,Integer> arrivalTimeColumn;
-    @FXML private TableColumn<process,Integer> burstTimeColumn;
+    @FXML private TableColumn<process,Double> arrivalTimeColumn;
+    @FXML private TableColumn<process,Double> burstTimeColumn;
     @FXML private TableColumn<process,Integer> priorityColumn;
 
     @FXML private Button addButton;
@@ -68,33 +71,46 @@ public class Controller implements Initializable
         burstTimeColumn.setCellValueFactory(new PropertyValueFactory<>("burstTime"));
         priorityColumn.setCellValueFactory(new PropertyValueFactory<>("priority"));
         table1.setItems(getProduct());
+
+
+        table1.setEditable(true);
+        nameColumn.setCellFactory(TextFieldTableCell.forTableColumn());
+        arrivalTimeColumn.setCellFactory(TextFieldTableCell.forTableColumn(new DoubleStringConverter()));
+        burstTimeColumn.setCellFactory(TextFieldTableCell.forTableColumn(new DoubleStringConverter()));
+        priorityColumn.setCellFactory(TextFieldTableCell.forTableColumn(new IntegerStringConverter()));
     }
 
+    public void changeNameCellEvent(TableColumn.CellEditEvent edittedCell)
+    {
+        process processSelected =  table1.getSelectionModel().getSelectedItem();
+        processSelected.setName(edittedCell.getNewValue().toString());
+    }
+    public void changeArrivalTimeCellEvent(TableColumn.CellEditEvent edittedCell)
+    {
+        process processSelected =  table1.getSelectionModel().getSelectedItem();
+        processSelected.setArrivalTime(Double.parseDouble(edittedCell.getNewValue().toString()));
+    }
+    public void changeBurstTimeCellEvent(TableColumn.CellEditEvent edittedCell)
+    {
+        process processSelected =  table1.getSelectionModel().getSelectedItem();
+        processSelected.setBurstTime(Double.parseDouble(edittedCell.getNewValue().toString()));
+    }
+
+    public void changePriorityCellEvent(TableColumn.CellEditEvent edittedCell)
+    {
+        process processSelected =  table1.getSelectionModel().getSelectedItem();
+        processSelected.setPriority(Integer.parseInt(edittedCell.getNewValue().toString()));
+    }
 
     private ObservableList<process> getProduct()
     {
         ObservableList<process> products = FXCollections.observableArrayList();
+
         products.add(new process("p1",0,10,4));
         products.add(new process("p2",2,5,3));
         products.add(new process("p3",4,3,5));
         products.add(new process("p4",6,2,1));
         products.add(new process("p5",7,1,2));
-
-
-        /*
-        products.add(new process("p1",20,1,5));
-        products.add(new process("p2",23,10,3));
-        products.add(new process("p3",24,6,1));
-        products.add(new process("p4",25,20,2));
-        products.add(new process("p5",26,4,1));
-        */
-        /*
-        products.add(new process("p1",0,10,3));
-        products.add(new process("p2",1,1,1));
-        products.add(new process("p3",2,2,4));
-        products.add(new process("p4",3,1,5));
-        products.add(new process("p5",4,5,2));
-*/
 
         return products;
     }
@@ -104,21 +120,40 @@ public class Controller implements Initializable
     public void addButtonClicked()
     {
         process p = new process();
-        p.setName(nameTextField.getText());
-        p.setArrivalTime(Double.parseDouble(arrivalTimeTextField.getText()));
-        p.setBurstTime(Double.parseDouble(burstTimeTextField.getText()));
-        if(c1.getValue()=="priority")
-            p.setPriority(Integer.parseInt(priorityTextField.getText()));
-        table1.getItems().add(p);
-        nameTextField.clear();
-        arrivalTimeTextField.clear();
-        burstTimeTextField.clear();
-        priorityTextField.clear();
-
+        if(nameTextField.getText().isEmpty() ||
+                arrivalTimeTextField.getText().isEmpty() ||
+                burstTimeTextField.getText().isEmpty() ||
+                (priorityTextField.getText().isEmpty() && c1.getValue()=="priority")
+                )
+        {
+            alertBox alertBox1=new alertBox();
+            alertBox1.display("Error","Missing Data!!!");
+            return;
+        }
+        try
+        {
+            p.setName(nameTextField.getText());
+            p.setArrivalTime(Double.parseDouble(arrivalTimeTextField.getText()));
+            p.setBurstTime(Double.parseDouble(burstTimeTextField.getText()));
+            if (c1.getValue() == "priority")
+                p.setPriority(Integer.parseInt(priorityTextField.getText()));
+            table1.getItems().add(p);
+            nameTextField.clear();
+            arrivalTimeTextField.clear();
+            burstTimeTextField.clear();
+            priorityTextField.clear();
+        }
+        catch(NumberFormatException x)
+        {
+            alertBox alertBox1=new alertBox();
+            alertBox1.display("Error","Please enter numbers not strings!!!");
+            return;
+        }
     }
 
     //Delete button clicked
-    public void deleteButtonClicked(){
+    public void deleteButtonClicked()
+    {
         ObservableList<process> selected, allProcesses;
         allProcesses = table1.getItems();
         selected = table1.getSelectionModel().getSelectedItems();
@@ -160,12 +195,22 @@ public class Controller implements Initializable
     public void scheduleButtonPressed()
     {
         List<process> l1 = table1.getItems().stream().collect(Collectors.toList());
+        for(process p:l1)
+        {
+            if(p.getArrivalTime()<0 || p.getBurstTime()<0 || p.getPriority()<0)
+            {
+                alertBox alertBox1=new alertBox();
+                alertBox1.display("Error","Please change the negative numbers!!!");
+                return;
+            }
+        }
 
         scheduler s1=new scheduler(l1);
 
         List<node> nodes=new ArrayList<node>() ;
 
-        System.out.println(c1.getValue());
+        String str=new String();
+
         if(c1.getValue()==null)
         {
             alertBox alertBox1=new alertBox();
@@ -175,35 +220,20 @@ public class Controller implements Initializable
         {
             if(c1.getValue()=="FIFO")
             {
-                nodes=s1.FIFOSort();
-                for(node x: nodes)
-                    System.out.println(x);
-                System.out.println(".............");
-                System.out.println(s1.geAveragetWaitingTime());
-                System.out.println(s1.geAveragetTurnAroundTime());
-                System.out.println(".............");
+                nodes = s1.FIFOSort();
+                str="FIFO";
             }
             else if(c1.getValue()=="SJF")
             {
                 if(nonpreempitive.isSelected())
                 {
                     nodes=s1.SJFNonpreempitive();
-                    for(node x: nodes)
-                        System.out.println(x);
-                    System.out.println(".............");
-                    System.out.println(s1.geAveragetWaitingTime());
-                    System.out.println(s1.geAveragetTurnAroundTime());
-                    System.out.println(".............");
+                    str="SJF Nonpreempitive";
                 }
                 else if(preempitive.isSelected())
                 {
                     nodes=s1.SJFPreempitive();
-                    for(node x: nodes)
-                        System.out.println(x);
-                    System.out.println(".............");
-                    System.out.println(s1.geAveragetWaitingTime());
-                    System.out.println(s1.geAveragetTurnAroundTime());
-                    System.out.println(".............");
+                    str="SJF preempitive";
                 }
             }
             else if(c1.getValue()=="priority")
@@ -211,49 +241,67 @@ public class Controller implements Initializable
                 if(nonpreempitive.isSelected())
                 {
                     nodes=s1.priorityNonpreempitive();
-                    for(node x: nodes)
-                        System.out.println(x);
-                    System.out.println(".............");
-                    System.out.println(s1.geAveragetWaitingTime());
-                    System.out.println(s1.geAveragetTurnAroundTime());
-                    System.out.println(".............");
+                    str="Priority Nonpreempitive";
                 }
                 else if(preempitive.isSelected())
                 {
                     nodes=s1.priorityPreempitive();
-                    for(node x: nodes)
-                        System.out.println(x);
-                    System.out.println(".............");
-                    System.out.println(s1.geAveragetWaitingTime());
-                    System.out.println(s1.geAveragetTurnAroundTime());
-                    System.out.println(".............");
+                    str="Priority preempitive";
                 }
             }
             else
             {
-                double q=Double.parseDouble(quantum.getText());
+                str="Round robin";
+                double q;
+                try
+                {
+                    q = Double.parseDouble(quantum.getText());
+                }
+                catch(NumberFormatException x)
+                {
+                    alertBox alertBox1=new alertBox();
+                    alertBox1.display("Error","Please enter a valid number for the quantum!!!");
+                    return;
+                }
+                quantum.clear();
                 nodes=s1.roundRobin(q);
-                for(node x: nodes)
-                    System.out.println(x);
-                System.out.println(".............");
-                System.out.println(s1.geAveragetWaitingTime());
-                System.out.println(s1.geAveragetTurnAroundTime());
-                System.out.println(".............");
             }
 
             Stage chart = new Stage();
-            chart.setTitle("Gantt chart");
-            chart.setMinWidth(800);
+            str+=" Gantt chart";
+            chart.setTitle(str);
+            chart.setMinWidth(1200);
             chart.setMinHeight(300);
-            HBox layout=new HBox();
-            layout.setAlignment(Pos.CENTER_LEFT);
-            VBox cell = new VBox(10);
-            Label x=new Label("0");
-            Label y=new Label(nodes.get(0).getName());
-            y.setBorder(new Border(new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, new BorderWidths(1,1,1,1))));
-            cell.getChildren().addAll(y,x);
-            layout.getChildren().addAll(cell);
-            Scene scene = new Scene(layout);
+            chart.setResizable(false);
+            VBox parent=new VBox();
+            HBox layout1=new HBox();
+            Scene scene = new Scene(parent);
+            parent.setAlignment(Pos.CENTER);
+            double totalTime=nodes.get(nodes.size()-1).getEndTime();
+
+            for(int i=0;i<nodes.size();i++)
+            {
+                double length=nodes.get(i).getEndTime()-nodes.get(i).getBeginTime();
+                Label l=new Label(nodes.get(i).getName());
+                l.setPrefSize(length*1200/totalTime,50);
+                l.setStyle("-fx-border-color: black");
+                layout1.getChildren().add(l);
+            }
+            HBox layout2=new HBox();
+            for(int i=0;i<nodes.size();i++)
+            {
+                double length=nodes.get(i).getEndTime()-nodes.get(i).getBeginTime();
+                Label l=new Label(Double.toString(nodes.get(i).getBeginTime()));
+                l.setPrefSize(length*1200/totalTime,20);
+                layout2.getChildren().add(l);
+            }
+            layout2.getChildren().add(new Label(Double.toString(nodes.get(nodes.size()-1).getEndTime())));
+            parent.getChildren().addAll(layout1,layout2);
+            HBox waitingTimeHbox=new HBox();
+            waitingTimeHbox.getChildren().add(new Label("Average waiting time="+Double.toString(s1.geAveragetWaitingTime())));
+            HBox turnaroundTimeHbox=new HBox();
+            turnaroundTimeHbox.getChildren().add(new Label("Average turnaround time="+Double.toString(s1.geAveragetTurnAroundTime())));
+            parent.getChildren().addAll(waitingTimeHbox,turnaroundTimeHbox);
             chart.setScene(scene);
             chart.show();
         }
