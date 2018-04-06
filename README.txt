@@ -1,1 +1,3 @@
-Simulating different scheduling algorithms used by operating systems using java,javaFX,sceneBuilder
+to run the program you should have java installed version 9
+
+
